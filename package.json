@@ -52,7 +52,8 @@
       "db": {
         "kind": "sqlite",
         "credentials": {
-          "database": "db/sub01.db"
+          "database": ":memory:",
+          "xdatabase": "db/sub01.db"
         }
       }
     }

@@ -1,5 +1,5 @@
-SubID;ID;title;stock;code
-0xABCD;1;Wuthering Heights;100;0
-0xABCD;2;Jane Eyre;500;0
-0x1234;1;Wuthering Heights;99;0
-0x1234;2;Jane Eyre;499;0
+TenantID;title;stock;code;genre
+6af31eb5-7905-42da-b1d4-c6646b6e9437;Wuthering Heights;100;0;Drama
+6af31eb5-7905-42da-b1d4-c6646b6e9437;Jane Eyre;500;0;Drama
+27d19ba6-7905-42da-b1d4-e4c5c42cb6ef;Wuthering Heights;99;0;Drama
+27d19ba6-7905-42da-b1d4-e4c5c42cb6ef;Jane Eyre;499;0;Drama

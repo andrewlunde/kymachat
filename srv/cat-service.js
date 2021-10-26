@@ -53,7 +53,7 @@ module.exports = cds.service.impl(async function() {
     // });
 
     this.before('READ', 'Books', req => {
-        req.query.where("SubID = '0x1234'");
+        req.query.where("TenantID = '6af31eb5-7905-42da-b1d4-c6646b6e9437'");
     });
 
     // this.before('CREATE', 'Books', req => {
