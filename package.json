@@ -51,9 +51,6 @@
     "requires": {
       "db": {
         "kind": "sqlite",
-        "model": [
-          "db/common.cds"
-        ],
         "credentials": {
           "database": "db/common.db"
         }

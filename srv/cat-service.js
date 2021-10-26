@@ -9,10 +9,13 @@ const util = require('util');
 module.exports = cds.service.impl(async function() {
  
     this.on('READ', 'Books', async (req, next) => {
-        console.log("ATTACH");
+        console.log("ATTACH before-spawn");
         cds.spawn({}, async () => {
-            await cds.db.run('ATTACH DATABASE "db/sub01.db" AS SUB');
-            console.log("ATTACH");
+            // ATTACH statement seems to have no effect in this context.
+            await cds.db.run('ATTACH DATABASE \'db/sub01.db\' AS SUB');
+            const schema = await cds.db.run('SELECT * FROM sqlite_master');
+            console.log("SCHEMA: " + util.inspect(schema,false,3));
+            console.log("ATTACH after-spawn");
             return next();
         });
     });
@@ -57,5 +60,6 @@ module.exports = cds.service.impl(async function() {
     //     });
     //   	console.log("after READ Books: ");
     // });
+
 });
 
