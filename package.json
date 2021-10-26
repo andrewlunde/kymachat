@@ -52,7 +52,7 @@
       "db": {
         "kind": "sqlite",
         "credentials": {
-          "database": "db/common.db"
+          "database": "db/sub01.db"
         }
       }
     }
