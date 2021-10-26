@@ -10,7 +10,7 @@ module.exports = cds.service.impl(async function() {
  
     this.on('READ', 'Books', async (req, next) => {
         console.log("ATTACH");
-        cds.spawn(async () => {
+        cds.spawn({}, async () => {
             await cds.db.run('ATTACH DATABASE "db/sub01.db" AS SUB');
             console.log("ATTACH");
             return next();

@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@sap/cds": "^5",
+    "@sap/cds": "^5.5.5",
     "express": "^4",
     "sqlite3": "^5.0.2"
   },
