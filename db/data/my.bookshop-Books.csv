@@ -1,0 +1,5 @@
+SubID;ID;title;stock;code
+0xABCD;1;Wuthering Heights;100;0
+0xABCD;2;Jane Eyre;500;0
+0x1234;1;Wuthering Heights;99;0
+0x1234;2;Jane Eyre;499;0
