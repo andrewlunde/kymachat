@@ -11,7 +11,7 @@ namespace my.bookshop;
 // ETH_ADDR : 0x2ed58ec12dd5cedaf88c564bd16e3a80c0a56257
 //            123456789012345678901234567890123456789012 = 42
 // THETA    : 0xce6a0549afbd36100a131a2cd20a82b920620e79
-using {cuid} from '@sap/cds/common';
+using {cuid,managed} from '@sap/cds/common';
 
 type SaasID : String(26);
 
@@ -24,16 +24,37 @@ type ETH_Addr : String(42);
 type Theta_Addr : ETH_Addr;
 
 type Genre : String enum {
-  Mystery; Fiction; Drama;
+  Mystery;
+  Fiction;
+  Drama;
+  Horror;
 }
 
-entity Books : cuid {
+type CustStatus : String enum {
+  Trial; Eval; Active; Suspended; Archived;
+}
+
+entity Books : cuid,managed {
   TenantID : Tenant_ID;
   SubaccountID : Subaccount_ID;
   title : String;
+  author : Association to Authors;
   stock : Integer;
   code  : Integer;
   genre : Genre;
+}
+
+entity Authors : cuid,managed {
+  TenantID : Tenant_ID;
+  name   : String(111);
+  books  : Association to many Books on books.author = $self;
+  genre : Genre;
+}
+
+entity Customers : cuid {
+  TenantID : Tenant_ID;
+  name : String;
+  status : CustStatus;
 }
 
 entity Config : cuid {

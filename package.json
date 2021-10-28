@@ -8,7 +8,8 @@
   "dependencies": {
     "@sap/cds": "^5.5.5",
     "express": "^4",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "cors": "^2.8.5"
   },
   "devDependencies": {
     "sqlite3": "^5.0.2"

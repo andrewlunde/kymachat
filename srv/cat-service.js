@@ -52,8 +52,18 @@ module.exports = cds.service.impl(async function() {
 	//     }
     // });
 
+    this.before('READ', 'Authors', req => {
+        // req.query.where("TenantID = '6af31eb5-7905-42da-b1d4-c6646b6e9437'");
+        req.query.where("TenantID = '27d19ba6-7905-42da-b1d4-e4c5c42cb6ef'");
+    });
+
+    this.before('CREATE', 'Books', req => {
+        console.log("before CREATE Books: ");
+    });
+
     this.before('READ', 'Books', req => {
-        req.query.where("TenantID = '6af31eb5-7905-42da-b1d4-c6646b6e9437'");
+        // req.query.where("TenantID = '6af31eb5-7905-42da-b1d4-c6646b6e9437'");
+        req.query.where("TenantID = '27d19ba6-7905-42da-b1d4-e4c5c42cb6ef'");
     });
 
     // this.before('CREATE', 'Books', req => {
