@@ -53,8 +53,8 @@
       "db": {
         "kind": "sqlite",
         "credentials": {
-          "database": ":memory:",
-          "xdatabase": "db/sub01.db"
+          "xdatabase": ":memory:",
+          "database": "db/prov.db"
         }
       }
     }

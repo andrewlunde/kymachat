@@ -1,0 +1,116 @@
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: xsuaa-service
+  namespace: kymachat
+spec:
+  clusterServiceClassExternalName: xsuaa
+  clusterServicePlanExternalName: broker # https://jam4.sapjam.com/blogs/show/2dxT4cVGxTXZRJT0D1DQQM
+  parameters:
+    xsappname: easyfranchise
+    tenant-mode: shared # use "shared" for multi-tenant application
+    scopes:
+      - name: $XSAPPNAME.Display
+        description: Display Scope
+      - name: $XSAPPNAME.Backend
+        description: Backend Scope
+      - name: $XSAPPNAME.Callback
+        description: With this scope set, the callbacks for tenant onboarding, offboarding and getDependencies can be called.
+        grant-as-authority-to-apps: 
+          - $XSAPPNAME(application,sap-provisioning,tenant-onboarding)
+    role-templates:
+      - name: Viewer
+        description: Viewer Role-Template
+        scope-references: [$XSAPPNAME.Display]
+      - name: Backend
+        description:  Backend Role-Template
+        scope-references: [$XSAPPNAME.Backend]
+    role-collections:
+      - name: Easy Franchise (UAA) Viewer Role Collection lcfx-prov>
+        description: Viewer Role-Collection
+        role-template-references: [$XSAPPNAME.Viewer]
+      - name: Easy Franchise (UAA) Backend Role Collection lcfx-prov>
+        description: Backend Role-Collection
+        role-template-references: [$XSAPPNAME.Backend]        
+    oauth2-configuration:
+      redirect-uris: 
+      - https://*.fe879d9.kyma.shoot.live.k8s-hana.ondemand.com/**
+      - http://localhost:5000/login/callback
+      token-validity:  900
+---
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceBinding
+metadata:
+  name: xsuaa-service-binding
+  namespace: kymachat
+spec:
+  instanceRef:
+    name: xsuaa-service
+---
+# # Resource to create instance for SaaS Registry services
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: saas-registry-service
+  namespace: kymachat
+spec:
+  clusterServiceClassExternalName: saas-registry
+  clusterServicePlanExternalName: application
+  parameters:
+    # the xsappname refers to the one defined in xsuaa service
+    xsappname: easyfranchise
+    displayName: Easy Franchise (Multitenant) lcfx-prov>
+    description: An application on Kyma with multi-tenant
+    category: "Demo applications"
+    appUrls:
+      # url registered in the kyma-broker which handles SaaS provisioning (subscription/deletion of saas instances)
+      onSubscription: https://subscription.fe879d9.kyma.shoot.live.k8s-hana.ondemand.com/callback/v1.0/tenants/{tenantId}
+      getDependencies: https://subscription.fe879d9.kyma.shoot.live.k8s-hana.ondemand.com/callback/v1.0/dependencies
+---
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceBinding
+metadata:
+  name: saas-registry-service-binding
+  namespace: kymachat
+spec:
+  instanceRef:
+    name: saas-registry-service
+---
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: ef-destination-service
+  namespace: kymachat
+spec:
+  clusterServiceClassExternalName: destination
+  clusterServicePlanExternalName: lite
+---
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceBinding
+metadata:
+  name: destination-service-binding
+  namespace: kymachat
+spec:
+  instanceRef:
+    name: ef-destination-service
+---
+apiVersion: gateway.kyma-project.io/v1alpha1
+kind: APIRule
+metadata:
+  name: subscription-apirule
+  namespace: kymachat
+spec:
+  gateway: kyma-gateway.kyma-system.svc.cluster.local
+  service:
+    name: broker
+    port: 3002
+    host: subscription # adapt to your kyma cluster
+  rules:
+    - path: /.*
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD"]
+      mutators:
+        - handler: header
+          config: {}
+      accessStrategies:
+        - handler: noop    
+---

@@ -1,6 +1,15 @@
 ```
 export DEBUG=sqlite
 
+cds build #Generates gen/srv
+mkdir -p gen/srv/db #Creates folder for SQLite db
+cds deploy --to sqlite:gen/srv/db/prov.db
+cd gen/srv
+npm i --production
+npm start
+
+cds deploy db/data-model.cds --to sqlite:db/prov.db
+
 cds deploy db/common.cds --to sqlite:db/common.db
 cds deploy db/data-model.cds --no-save --to sqlite:db/sub01.db
 cds deploy srv/cat-service.cds --no-save --to sqlite:db/sub01.db
